@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>AI BASE Ranking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    margin: 0;
+    padding: 28px;
+    background: #080808;
+    color: #f5f5f5;
+    font-family: Arial, "Yu Gothic", sans-serif;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.brand {
+    color: #d6b35a;
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    margin-bottom: 8px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 34px;
+    letter-spacing: 0.04em;
+}
+
+.subtitle {
+    margin-top: 10px;
+    color: #bdbdbd;
+    font-size: 14px;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin: 24px 0 18px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    border: 1px solid #4a3f24;
+    background: #151515;
+    color: #d6b35a;
+    padding: 9px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tab-btn.active {
+    background: #d6b35a;
+    color: #080808;
+}
+
+.card {
+    background: linear-gradient(135deg, #111, #1b1b1b);
+    border: 1px solid #3a3320;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 0 24px rgba(214, 179, 90, 0.08);
+    overflow-x: auto;
+}
+
+.ranking-section {
+    display: none;
+}
+
+.ranking-section.active {
+    display: block;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 980px;
+}
+
+th {
+    color: #d6b35a;
+    text-align: left;
+    padding: 12px 10px;
+    border-bottom: 1px solid #4a3f24;
+}
+
+td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #252525;
+}
+
+tr:hover {
+    background: rgba(214, 179, 90, 0.08);
+}
+
+.rank {
+    color: #d6b35a;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.engine {
+    font-weight: bold;
+}
+
+.engine a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.engine a:hover {
+    color: #d6b35a;
+}
+
+.profit {
+    text-align: right;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.updown {
+    color: #d6b35a;
+    font-weight: bold;
+}
+
+.param {
+    color: #cccccc;
+    font-size: 13px;
+}
+
+.rank-1 td {
+    background: rgba(214, 179, 90, 0.10);
+}
+
+.rank-2 td {
+    background: rgba(190, 190, 190, 0.08);
+}
+
+.rank-3 td {
+    background: rgba(180, 110, 45, 0.08);
+}
+
+.footer {
+    margin-top: 18px;
+    color: #777;
+    font-size: 12px;
+    text-align: right;
+}
+
+.note {
+    margin-top: 10px;
+    color: #888;
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 18px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div class="brand">AI BASE</div>
+    <h1>AI BASE Ranking</h1>
+    <div class="subtitle">Real-Time Performance Monitor / TOP 20</div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('d7', this)">7 Days</button>
+        <button class="tab-btn" onclick="showTab('d30', this)">30 Days</button>
+        <button class="tab-btn" onclick="showTab('d90', this)">90 Days</button>
+        <button class="tab-btn" onclick="showTab('all', this)">ALL</button>
+    </div>
+
+    <div class="card">
+
+        <div id="d7" class="ranking-section active">
+            <table>
+                <thead>
+    <tr>
+        <th>Rank</th>
+        <th>Up/Dn</th>
+        <th>Engine</th>
+        <th>Pair</th>
+        <th>TF</th>
+        <th style="text-align:right;">Profit</th>
+        <th>Trades</th>
+        <th>WinRate</th>
+        <th>Developer</th>
+        <th>Parameter</th>
+    </tr>
+    </thead>
+                <tbody>
+        <tr class="rank-1">
+            <td class="rank">🥇</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Supporter</td>
+            <td>USDJPY</td>
+            <td>M5</td>
+            <td class="profit">123,903</td>
+            <td>18</td>
+            <td>88.9%</td>
+            <td>AI Base</td>
+            <td class="param">A=15 B=65 C=15</td>
+        </tr>
+        
+        <tr class="rank-2">
+            <td class="rank">🥈</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURUSD</td>
+            <td>M5</td>
+            <td class="profit">92,700</td>
+            <td>4</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-3">
+            <td class="rank">🥉</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURUSD</td>
+            <td>H1</td>
+            <td class="profit">81,771</td>
+            <td>3</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=55 C=10</td>
+        </tr>
+        
+        <tr class="rank-4">
+            <td class="rank">4</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>USDJPY</td>
+            <td>H1</td>
+            <td class="profit">60,587</td>
+            <td>3</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-5">
+            <td class="rank">5</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>EURUSD</td>
+            <td>M15</td>
+            <td class="profit">58,935</td>
+            <td>5</td>
+            <td>80.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=1.0</td>
+        </tr>
+        
+        <tr class="rank-6">
+            <td class="rank">6</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.TickRock</td>
+            <td>EURUSD</td>
+            <td>M15</td>
+            <td class="profit">53,953</td>
+            <td>14</td>
+            <td>92.9%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=0.1 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-7">
+            <td class="rank">7</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>EURJPY</td>
+            <td>M15</td>
+            <td class="profit">51,663</td>
+            <td>9</td>
+            <td>77.8%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=2.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-8">
+            <td class="rank">8</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>USDJPY</td>
+            <td>M5</td>
+            <td class="profit">50,298</td>
+            <td>3</td>
+            <td>66.7%</td>
+            <td>AI Base</td>
+            <td class="param">A=15 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-9">
+            <td class="rank">9</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>CHFJPY</td>
+            <td>M15</td>
+            <td class="profit">46,500</td>
+            <td>11</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-10">
+            <td class="rank">10</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>USDJPY</td>
+            <td>M15</td>
+            <td class="profit">42,238</td>
+            <td>9</td>
+            <td>77.8%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=2.5 C=1.5</td>
+        </tr>
+        
+        <tr class="rank-11">
+            <td class="rank">11</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>EURJPY</td>
+            <td>M5</td>
+            <td class="profit">31,900</td>
+            <td>10</td>
+            <td>80.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=2.0 C=1.0</td>
+        </tr>
+        
+        <tr class="rank-12">
+            <td class="rank">12</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>GBPJPY</td>
+            <td>M15</td>
+            <td class="profit">30,500</td>
+            <td>3</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=55 C=5</td>
+        </tr>
+        
+        <tr class="rank-13">
+            <td class="rank">13</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>AUDJPY</td>
+            <td>H1</td>
+            <td class="profit">30,000</td>
+            <td>2</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=1.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-14">
+            <td class="rank">14</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.TickRock</td>
+            <td>EURUSD</td>
+            <td>M5</td>
+            <td class="profit">29,979</td>
+            <td>4</td>
+            <td>75.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=10 B=0.1 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-15">
+            <td class="rank">15</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.TickRock</td>
+            <td>EURJPY</td>
+            <td>M5</td>
+            <td class="profit">29,818</td>
+            <td>4</td>
+            <td>75.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=10 B=0.1 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-16">
+            <td class="rank">16</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>CHFJPY</td>
+            <td>M5</td>
+            <td class="profit">29,700</td>
+            <td>2</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=2.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-17">
+            <td class="rank">17</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>EURUSD</td>
+            <td>M5</td>
+            <td class="profit">28,584</td>
+            <td>5</td>
+            <td>80.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=1.0 C=1.0</td>
+        </tr>
+        
+        <tr class="rank-18">
+            <td class="rank">18</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Supporter</td>
+            <td>AUDJPY</td>
+            <td>M5</td>
+            <td class="profit">27,128</td>
+            <td>53</td>
+            <td>75.5%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-19">
+            <td class="rank">19</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>GBPJPY</td>
+            <td>M15</td>
+            <td class="profit">26,600</td>
+            <td>2</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=1.0 C=1.5</td>
+        </tr>
+        
+        <tr class="rank-20">
+            <td class="rank">20</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>GBPJPY</td>
+            <td>M5</td>
+            <td class="profit">23,100</td>
+            <td>30</td>
+            <td>58.6%</td>
+            <td>AI Base</td>
+            <td class="param">A=15 B=65 C=15</td>
+        </tr>
+        </tbody>
+            </table>
+        </div>
+
+        <div id="d30" class="ranking-section">
+            <table>
+                <thead>
+    <tr>
+        <th>Rank</th>
+        <th>Up/Dn</th>
+        <th>Engine</th>
+        <th>Pair</th>
+        <th>TF</th>
+        <th style="text-align:right;">Profit</th>
+        <th>Trades</th>
+        <th>WinRate</th>
+        <th>Developer</th>
+        <th>Parameter</th>
+    </tr>
+    </thead>
+                <tbody>
+        <tr class="rank-1">
+            <td class="rank">🥇</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.TickRock</td>
+            <td>EURUSD</td>
+            <td>M15</td>
+            <td class="profit">317,387</td>
+            <td>102</td>
+            <td>90.2%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=0.1 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-2">
+            <td class="rank">🥈</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Supporter</td>
+            <td>USDJPY</td>
+            <td>M15</td>
+            <td class="profit">237,444</td>
+            <td>51</td>
+            <td>90.2%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=60 C=10</td>
+        </tr>
+        
+        <tr class="rank-3">
+            <td class="rank">🥉</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Supporter</td>
+            <td>USDJPY</td>
+            <td>M5</td>
+            <td class="profit">224,407</td>
+            <td>45</td>
+            <td>75.6%</td>
+            <td>AI Base</td>
+            <td class="param">A=15 B=65 C=15</td>
+        </tr>
+        
+        <tr class="rank-4">
+            <td class="rank">4</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>USDJPY</td>
+            <td>M15</td>
+            <td class="profit">152,692</td>
+            <td>42</td>
+            <td>73.8%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=2.5 C=1.5</td>
+        </tr>
+        
+        <tr class="rank-5">
+            <td class="rank">5</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>USDJPY</td>
+            <td>M15</td>
+            <td class="profit">102,095</td>
+            <td>21</td>
+            <td>71.4%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=2.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-6">
+            <td class="rank">6</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Supporter</td>
+            <td>EURJPY</td>
+            <td>H1</td>
+            <td class="profit">100,384</td>
+            <td>29</td>
+            <td>58.6%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=65 C=15</td>
+        </tr>
+        
+        <tr class="rank-7">
+            <td class="rank">7</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURUSD</td>
+            <td>M5</td>
+            <td class="profit">85,432</td>
+            <td>26</td>
+            <td>73.1%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-8">
+            <td class="rank">8</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Supporter</td>
+            <td>EURUSD</td>
+            <td>H1</td>
+            <td class="profit">76,396</td>
+            <td>44</td>
+            <td>79.5%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-9">
+            <td class="rank">9</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>EURJPY</td>
+            <td>M15</td>
+            <td class="profit">74,959</td>
+            <td>70</td>
+            <td>74.3%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=2.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-10">
+            <td class="rank">10</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>USDJPY</td>
+            <td>H1</td>
+            <td class="profit">70,736</td>
+            <td>14</td>
+            <td>85.7%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-11">
+            <td class="rank">11</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>USDJPY</td>
+            <td>H1</td>
+            <td class="profit">62,138</td>
+            <td>4</td>
+            <td>50.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=2.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-12">
+            <td class="rank">12</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>CHFJPY</td>
+            <td>M15</td>
+            <td class="profit">46,500</td>
+            <td>11</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-13">
+            <td class="rank">13</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Supporter</td>
+            <td>AUDJPY</td>
+            <td>M5</td>
+            <td class="profit">43,254</td>
+            <td>367</td>
+            <td>77.9%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-14">
+            <td class="rank">14</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>USDJPY</td>
+            <td>H1</td>
+            <td class="profit">37,578</td>
+            <td>17</td>
+            <td>64.7%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=65 C=10</td>
+        </tr>
+        
+        <tr class="rank-15">
+            <td class="rank">15</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURJPY</td>
+            <td>H1</td>
+            <td class="profit">36,487</td>
+            <td>6</td>
+            <td>80.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=60 C=10</td>
+        </tr>
+        
+        <tr class="rank-16">
+            <td class="rank">16</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>USDJPY</td>
+            <td>M5</td>
+            <td class="profit">35,298</td>
+            <td>16</td>
+            <td>42.9%</td>
+            <td>AI Base</td>
+            <td class="param">A=15 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-17">
+            <td class="rank">17</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>GBPJPY</td>
+            <td>M15</td>
+            <td class="profit">30,500</td>
+            <td>3</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=55 C=5</td>
+        </tr>
+        
+        <tr class="rank-18">
+            <td class="rank">18</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>AUDJPY</td>
+            <td>H1</td>
+            <td class="profit">30,000</td>
+            <td>2</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=1.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-19">
+            <td class="rank">19</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>CHFJPY</td>
+            <td>M5</td>
+            <td class="profit">29,700</td>
+            <td>2</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=2.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-20">
+            <td class="rank">20</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>GBPJPY</td>
+            <td>M15</td>
+            <td class="profit">26,600</td>
+            <td>2</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=1.0 C=1.5</td>
+        </tr>
+        </tbody>
+            </table>
+        </div>
+
+        <div id="d90" class="ranking-section">
+            <table>
+                <thead>
+    <tr>
+        <th>Rank</th>
+        <th>Up/Dn</th>
+        <th>Engine</th>
+        <th>Pair</th>
+        <th>TF</th>
+        <th style="text-align:right;">Profit</th>
+        <th>Trades</th>
+        <th>WinRate</th>
+        <th>Developer</th>
+        <th>Parameter</th>
+    </tr>
+    </thead>
+                <tbody>
+        <tr class="rank-1">
+            <td class="rank">🥇</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.TickRock</td>
+            <td>EURUSD</td>
+            <td>M15</td>
+            <td class="profit">599,369</td>
+            <td>332</td>
+            <td>88.6%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=0.1 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-2">
+            <td class="rank">🥈</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>USDJPY</td>
+            <td>H1</td>
+            <td class="profit">360,342</td>
+            <td>43</td>
+            <td>83.7%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-3">
+            <td class="rank">🥉</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>USDJPY</td>
+            <td>M15</td>
+            <td class="profit">275,870</td>
+            <td>57</td>
+            <td>71.9%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=2.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-4">
+            <td class="rank">4</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>EURUSD</td>
+            <td>M15</td>
+            <td class="profit">255,385</td>
+            <td>53</td>
+            <td>69.8%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=1.0</td>
+        </tr>
+        
+        <tr class="rank-5">
+            <td class="rank">5</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Supporter</td>
+            <td>EURJPY</td>
+            <td>H1</td>
+            <td class="profit">242,431</td>
+            <td>121</td>
+            <td>81.8%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=65 C=15</td>
+        </tr>
+        
+        <tr class="rank-6">
+            <td class="rank">6</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURUSD</td>
+            <td>M5</td>
+            <td class="profit">162,284</td>
+            <td>99</td>
+            <td>75.8%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-7">
+            <td class="rank">7</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>USDJPY</td>
+            <td>M15</td>
+            <td class="profit">150,547</td>
+            <td>123</td>
+            <td>78.9%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=2.5 C=1.5</td>
+        </tr>
+        
+        <tr class="rank-8">
+            <td class="rank">8</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>EURJPY</td>
+            <td>M15</td>
+            <td class="profit">90,344</td>
+            <td>89</td>
+            <td>84.3%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=1.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-9">
+            <td class="rank">9</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>EURUSD</td>
+            <td>H1</td>
+            <td class="profit">76,576</td>
+            <td>37</td>
+            <td>32.4%</td>
+            <td>AI Base</td>
+            <td class="param">A=15 B=2.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-10">
+            <td class="rank">10</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURJPY</td>
+            <td>M5</td>
+            <td class="profit">50,448</td>
+            <td>86</td>
+            <td>81.7%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-11">
+            <td class="rank">11</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>CHFJPY</td>
+            <td>M15</td>
+            <td class="profit">46,500</td>
+            <td>11</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-12">
+            <td class="rank">12</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>EURJPY</td>
+            <td>M5</td>
+            <td class="profit">38,642</td>
+            <td>166</td>
+            <td>80.1%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=2.0 C=1.0</td>
+        </tr>
+        
+        <tr class="rank-13">
+            <td class="rank">13</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>USDJPY</td>
+            <td>H1</td>
+            <td class="profit">37,578</td>
+            <td>17</td>
+            <td>64.7%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=65 C=10</td>
+        </tr>
+        
+        <tr class="rank-14">
+            <td class="rank">14</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURJPY</td>
+            <td>H1</td>
+            <td class="profit">36,487</td>
+            <td>6</td>
+            <td>80.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=60 C=10</td>
+        </tr>
+        
+        <tr class="rank-15">
+            <td class="rank">15</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>GBPJPY</td>
+            <td>M15</td>
+            <td class="profit">30,500</td>
+            <td>3</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=55 C=5</td>
+        </tr>
+        
+        <tr class="rank-16">
+            <td class="rank">16</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>AUDJPY</td>
+            <td>H1</td>
+            <td class="profit">30,000</td>
+            <td>2</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=1.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-17">
+            <td class="rank">17</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>CHFJPY</td>
+            <td>M5</td>
+            <td class="profit">29,700</td>
+            <td>2</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=2.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-18">
+            <td class="rank">18</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>GBPJPY</td>
+            <td>M15</td>
+            <td class="profit">26,600</td>
+            <td>2</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=1.0 C=1.5</td>
+        </tr>
+        
+        <tr class="rank-19">
+            <td class="rank">19</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.TickRock</td>
+            <td>USDJPY</td>
+            <td>M5</td>
+            <td class="profit">25,700</td>
+            <td>6</td>
+            <td>50.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=0.1 C=0.7</td>
+        </tr>
+        
+        <tr class="rank-20">
+            <td class="rank">20</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>EURUSD</td>
+            <td>M5</td>
+            <td class="profit">23,887</td>
+            <td>119</td>
+            <td>58.8%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=1.0 C=1.0</td>
+        </tr>
+        </tbody>
+            </table>
+        </div>
+
+        <div id="all" class="ranking-section">
+            <table>
+                <thead>
+    <tr>
+        <th>Rank</th>
+        <th>Up/Dn</th>
+        <th>Engine</th>
+        <th>Pair</th>
+        <th>TF</th>
+        <th style="text-align:right;">Profit</th>
+        <th>Trades</th>
+        <th>WinRate</th>
+        <th>Developer</th>
+        <th>Parameter</th>
+    </tr>
+    </thead>
+                <tbody>
+        <tr class="rank-1">
+            <td class="rank">🥇</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.TickRock</td>
+            <td>EURUSD</td>
+            <td>M15</td>
+            <td class="profit">599,369</td>
+            <td>332</td>
+            <td>88.6%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=0.1 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-2">
+            <td class="rank">🥈</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>USDJPY</td>
+            <td>H1</td>
+            <td class="profit">502,977</td>
+            <td>60</td>
+            <td>63.3%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=2.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-3">
+            <td class="rank">🥉</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>EURJPY</td>
+            <td>M15</td>
+            <td class="profit">487,494</td>
+            <td>130</td>
+            <td>87.7%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=1.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-4">
+            <td class="rank">4</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.TickRock</td>
+            <td>USDJPY</td>
+            <td>H1</td>
+            <td class="profit">464,224</td>
+            <td>119</td>
+            <td>45.4%</td>
+            <td>AI Base</td>
+            <td class="param">A=10 B=0.1 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-5">
+            <td class="rank">5</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Supporter</td>
+            <td>USDJPY</td>
+            <td>M5</td>
+            <td class="profit">373,401</td>
+            <td>377</td>
+            <td>77.5%</td>
+            <td>AI Base</td>
+            <td class="param">A=15 B=65 C=15</td>
+        </tr>
+        
+        <tr class="rank-6">
+            <td class="rank">6</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Supporter</td>
+            <td>EURJPY</td>
+            <td>H1</td>
+            <td class="profit">360,966</td>
+            <td>174</td>
+            <td>82.2%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=65 C=15</td>
+        </tr>
+        
+        <tr class="rank-7">
+            <td class="rank">7</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>USDJPY</td>
+            <td>H1</td>
+            <td class="profit">360,342</td>
+            <td>43</td>
+            <td>83.7%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-8">
+            <td class="rank">8</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURUSD</td>
+            <td>H1</td>
+            <td class="profit">342,209</td>
+            <td>118</td>
+            <td>80.5%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=55 C=10</td>
+        </tr>
+        
+        <tr class="rank-9">
+            <td class="rank">9</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>USDJPY</td>
+            <td>M15</td>
+            <td class="profit">275,870</td>
+            <td>57</td>
+            <td>71.9%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=2.5 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-10">
+            <td class="rank">10</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.TickRock</td>
+            <td>EURJPY</td>
+            <td>H1</td>
+            <td class="profit">272,932</td>
+            <td>109</td>
+            <td>60.6%</td>
+            <td>AI Base</td>
+            <td class="param">A=10 B=0.1 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-11">
+            <td class="rank">11</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>EURUSD</td>
+            <td>M15</td>
+            <td class="profit">255,385</td>
+            <td>53</td>
+            <td>69.8%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=1.0</td>
+        </tr>
+        
+        <tr class="rank-12">
+            <td class="rank">12</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>USDJPY</td>
+            <td>M15</td>
+            <td class="profit">150,547</td>
+            <td>123</td>
+            <td>78.9%</td>
+            <td>AI Base</td>
+            <td class="param">A=12 B=2.5 C=1.5</td>
+        </tr>
+        
+        <tr class="rank-13">
+            <td class="rank">13</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURUSD</td>
+            <td>M5</td>
+            <td class="profit">137,092</td>
+            <td>109</td>
+            <td>74.3%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-14">
+            <td class="rank">14</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Balancer</td>
+            <td>EURUSD</td>
+            <td>H1</td>
+            <td class="profit">135,247</td>
+            <td>81</td>
+            <td>53.1%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=1.5</td>
+        </tr>
+        
+        <tr class="rank-15">
+            <td class="rank">15</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>EURUSD</td>
+            <td>H1</td>
+            <td class="profit">76,576</td>
+            <td>37</td>
+            <td>32.4%</td>
+            <td>AI Base</td>
+            <td class="param">A=15 B=2.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-16">
+            <td class="rank">16</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>CHFJPY</td>
+            <td>M15</td>
+            <td class="profit">46,500</td>
+            <td>11</td>
+            <td>100.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=1.0 C=0.5</td>
+        </tr>
+        
+        <tr class="rank-17">
+            <td class="rank">17</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURJPY</td>
+            <td>M5</td>
+            <td class="profit">41,748</td>
+            <td>97</td>
+            <td>81.7%</td>
+            <td>AI Base</td>
+            <td class="param">A=16 B=60 C=15</td>
+        </tr>
+        
+        <tr class="rank-18">
+            <td class="rank">18</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>USDJPY</td>
+            <td>H1</td>
+            <td class="profit">37,578</td>
+            <td>17</td>
+            <td>64.7%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=65 C=10</td>
+        </tr>
+        
+        <tr class="rank-19">
+            <td class="rank">19</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.zQn</td>
+            <td>EURJPY</td>
+            <td>H1</td>
+            <td class="profit">36,487</td>
+            <td>6</td>
+            <td>80.0%</td>
+            <td>AI Base</td>
+            <td class="param">A=14 B=60 C=10</td>
+        </tr>
+        
+        <tr class="rank-20">
+            <td class="rank">20</td>
+            <td class="updown">→</td>
+            <td class="engine">AI.Trend-Link</td>
+            <td>EURJPY</td>
+            <td>M5</td>
+            <td class="profit">35,093</td>
+            <td>192</td>
+            <td>80.2%</td>
+            <td>AI Base</td>
+            <td class="param">A=13 B=2.0 C=1.0</td>
+        </tr>
+        </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="note">現在、各期間の利益プラス上位20位までを掲載しています。</div>
+    <div class="footer">Updated: 2026-06-16 02:15:03</div>
+
+</div>
+
+<script>
+function showTab(id, btn) {
+    document.querySelectorAll('.ranking-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
